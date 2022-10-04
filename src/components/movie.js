@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
-export default function Movie({id, film, cover, setSelected}){
+export default function Movie({id, movie, cover, setSelected, setTitle}){
     function select(){
         setSelected(id);
+        setTitle('Selecione o horário');
     }
 
     return(
         <MovieInPoster>
-            <img src={cover} alt={film} onClick={select} />
+            <img src={cover} alt={movie} onClick={select} />
         </MovieInPoster>
     );
 }
