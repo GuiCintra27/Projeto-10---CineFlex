@@ -7,7 +7,6 @@ import Header from "./header";
 export default function App() {
     const [selected, setSelected] = useState({status: false, footer:false});
     const [movieSession, setMovieSession] = useState('');
-    const [movieSessionInfo, setMovieSessionInfo] = useState([]);
     const [sessionInformations, setSessionInformations] = useState({isTrue: false});
 
     return (
@@ -16,7 +15,7 @@ export default function App() {
             <Header />
             <Body selected={selected} setSelected={setSelected} sessionInformations={sessionInformations} setSessionInformations={setSessionInformations} movieSession={movieSession} setMovieSession={setMovieSession}/>
             {selected.footer !== false ?
-                <Footer movieSessionInfo={movieSessionInfo} setMovieSessionInfo={setMovieSessionInfo} sessionInformations={sessionInformations} movieSession={movieSession}/>
+                <Footer sessionInformations={sessionInformations} movieSession={movieSession}/>
                 :
                 null
             }

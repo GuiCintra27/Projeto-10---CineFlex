@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function Footer({ movieSessionInfo, setMovieSessionInfo, sessionInformations, movieSession }) {
+export default function Footer({ sessionInformations, movieSession }) {
     const sessions = movieSession.days;
     let day, hour;
     if (sessions){

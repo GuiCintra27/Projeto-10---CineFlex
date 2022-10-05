@@ -1,23 +1,31 @@
 import styled from "styled-components";
 
-export default function SucessfullyOrder({ movie, titleStyle, setTitleStyle, buyerInformation }) {
+export default function SucessfullyOrder({ movie, sessionInformations, selectedSeats, buyerInformation, movieSession, titleStyle, setTitleStyle }) {
+    const sessions = movieSession.days;
+    let day, hour;
+    if (sessions){
+        day = sessions[sessionInformations.day];
+        if(day){
+            hour = day.showtimes[sessionInformations.hour];
+        }
+    }
+   
     if (titleStyle[0] === 'black') {
         setTitleStyle(['var(--succesful-order)', '700']);
     }
-
-    console.log(movie)
 
     return (
         <>
             <Informations>
                 <h1>Filme e sessão</h1>
                 <p>{movie}</p>
-                <p>24/06/2021 15:00</p>
+                <p>{day.date} {hour.name}</p>
             </Informations>
             <Informations>
                 <h1>Ingressos</h1>
-                <p>Assento 15</p>
-                <p>Assento 16</p>
+                {selectedSeats.name.map((item, index) => (
+                    <p key={index}>{item}</p>
+                ))}
             </Informations>
             <Informations>
                 <h1>Comprador</h1>

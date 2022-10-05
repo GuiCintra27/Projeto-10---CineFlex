@@ -11,11 +11,11 @@ export default function Body({ selected, setSelected, sessionInformations, setSe
     const [title, setTitle] = useState('Selecione o filme');
     const [titleStyle, setTitleStyle] = useState(['black', '400']);
     const [movieList, setMovieList] = useState('');
-    const [selectedSeats, setSelectedSeats] = useState('');
+    const [selectedSeats, setSelectedSeats] = useState({id: [], name:[]});
     const [buyersName, setBuyersName] = useState('');
     const [cpf, setCpf] = useState('');
     const [requestTicket, setRequestTicket] = useState(false);
-    const buy = { ids: selectedSeats, name: buyersName, cpf: cpf };
+    const buy = { ids: selectedSeats.id, name: buyersName, cpf: cpf };
 
     useEffect(() => {
         const listURL = 'https://mock-api.driven.com.br/api/v5/cineflex/movies';
@@ -44,8 +44,8 @@ export default function Body({ selected, setSelected, sessionInformations, setSe
     }, [movieSession]);
 
     useEffect(() => {
-        if (selectedSeats.length > 0) {
-            const buyURL = 'https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many';
+        if (selectedSeats.id.length > 0) {
+            const buyURL = 'https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many';
 
             axios.post(buyURL, buy).then(response => {
                 setSelected({id: selected.id, status: true, footer:false});
@@ -60,7 +60,7 @@ export default function Body({ selected, setSelected, sessionInformations, setSe
     }, [requestTicket]);
 
     if (movieList.length === 0 || (movieList.length > 0 && movieSession === false)) {
-        return <Loading />
+        return <Loading/>
     }
 
     return (
@@ -71,19 +71,19 @@ export default function Body({ selected, setSelected, sessionInformations, setSe
             {(selected.status === false) ?
                 <Poster>
                     {movieList.map((item, index) => (
-                        <Movie key={index} id={item.id} movie={item.title} cover={item.posterURL} setSelected={setSelected} setTitle={setTitle} setMovieSession={setMovieSession} />
+                        <Movie key={index} id={item.id} movie={item.title} cover={item.posterURL} setSelected={setSelected} setTitle={setTitle} setMovieSession={setMovieSession}/>
                     ))}
                 </Poster>
                 :
                 (sessionInformations.isTrue ?
-                    (requestTicket ?
-                        <SucessfullyOrder movie={movieList[selected.id - 1].title} titleStyle={titleStyle} setTitleStyle={setTitleStyle} buyerInformation={buy}/>
+                    (requestTicket === true ?
+                        <SucessfullyOrder movie={movieList[selected.id - 1].title} sessionInformations={sessionInformations} movieSession={movieSession} selectedSeats={selectedSeats} buyerInformation={buy} titleStyle={titleStyle} setTitleStyle={setTitleStyle}/>
                         :
-                        <BuyTicket sessionId={sessionInformations.sessionId} buyersName={buyersName} setBuyersName={setBuyersName} cpf={cpf} setCpf={setCpf} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} setRequestTicket={setRequestTicket} setTitle={setTitle} />)
+                        <BuyTicket sessionId={sessionInformations.sessionId} buyersName={buyersName} setBuyersName={setBuyersName} cpf={cpf} setCpf={setCpf} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} setRequestTicket={setRequestTicket} setTitle={setTitle}/>)
                     :
                     <SessionInformations>
                         {movieSession.days.map((item, index) => (
-                            <Session key={index} sessionDay={index} weekday={item.weekday} date={item.date} hours={item.showtimes} setTitle={setTitle} setSessionInformations={setSessionInformations} />
+                            <Session key={index} sessionDay={index} weekday={item.weekday} date={item.date} hours={item.showtimes} setTitle={setTitle} setSessionInformations={setSessionInformations}/>
                         ))}
                     </SessionInformations>
                 )}

@@ -5,8 +5,8 @@ export default function Seats({item, index, selectedSeats, setSelectedSeats}) {
     const [seatAvailable, setSeatAvailable] = useState('var(--seat-available)');
     const [availableBorder, setAvailableBorder] = useState('var(--seat-available-border)');
 
-    function selectSeat(selectedSeat) {
-        setSelectedSeats([...selectedSeats, selectedSeat]);
+    function selectSeat(id, name) {
+        setSelectedSeats({id: [...selectedSeats.id, id], name: [...selectedSeats.name, name]});
         setSeatAvailable('var(--selected-seat)');
         setAvailableBorder('var(--selected-seat-border)');
     }
@@ -16,7 +16,7 @@ export default function Seats({item, index, selectedSeats, setSelectedSeats}) {
             key={index}
             color={item.isAvailable ? seatAvailable : 'var(--seat-unavailable)'}
             border={item.isAvailable ? availableBorder : 'var(--seat-unavailable-border)'}
-            onClick={item.isAvailable ? () => selectSeat(item.id) : null}>
+            onClick={item.isAvailable ? () => selectSeat(item.id, item.name) : null}>
             {item.name}
         </Seat>
     );
