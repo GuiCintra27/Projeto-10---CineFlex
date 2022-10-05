@@ -1,18 +1,24 @@
 import styled from "styled-components";
-import filmList from "./filmList";
 
-export default function Footer({ selected, sessionInformations }) {
-    const selectedMovie = filmList[selected], day = sessionInformations.day, hour = sessionInformations.hour, hourList = selectedMovie.session[day];
+export default function Footer({ sessionInformations, movieSession }) {
+    const sessions = movieSession.days;
+    let day, hour;
+    if (sessions){
+        day = sessions[sessionInformations.day];
+        if(day){
+            hour = day.showtimes[sessionInformations.hour];
+        }
+    }
 
     return (
         <MovieSelected>
             <MovieInPoster>
-                <img src={selectedMovie.cover} alt={selectedMovie.movie} />
+                <img src={movieSession.posterURL} alt={movieSession.title} />
             </MovieInPoster>
             <MovieInformations>
-                <h1>{selectedMovie.movie}</h1>
+                <h1>{movieSession.title}</h1>
                 {sessionInformations.isTrue ?
-                    <h1>{selectedMovie.session[day].day} - {hourList.hours[hour].hour}</h1>
+                    <h1>{day.weekday} - {hour.name}</h1>
                     :
                     null
                 }

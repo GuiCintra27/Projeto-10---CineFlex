@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
     --seat-available: #C3CFD9;
     --seat-available-border: #808F9D;
     --seat-unavailable: #FBE192;
-    --seat-unnavailable-border: #F7C52B;
+    --seat-unavailable-border: #F7C52B;
     --input-border: #D4D4D4;
     --black: #293845;
   }

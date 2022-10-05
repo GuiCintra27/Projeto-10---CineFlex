@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
-export default function Movie({id, movie, cover, setSelected, setTitle}){
+export default function Movie({id, movie, cover, setSelected, setTitle, setMovieSession}){
     function select(){
         setSelected(id);
         setTitle('Selecione o horário');
+        setMovieSession(false)
     }
 
     return(

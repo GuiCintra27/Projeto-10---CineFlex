@@ -6,15 +6,16 @@ import Header from "./header";
 
 export default function App() {
     const [selected, setSelected] = useState(false);
+    const [movieSession, setMovieSession] = useState('');
     const [sessionInformations, setSessionInformations] = useState({isTrue: false});
 
     return (
         <>
             <GlobalStyle />
             <Header />
-            <Body selected={selected} setSelected={setSelected} sessionInformations={sessionInformations} setSessionInformations={setSessionInformations}/>
+            <Body selected={selected} setSelected={setSelected} sessionInformations={sessionInformations} setSessionInformations={setSessionInformations} movieSession={movieSession} setMovieSession={setMovieSession}/>
             {selected !== false ?
-                <Footer selected={selected} sessionInformations={sessionInformations}/>
+                <Footer sessionInformations={sessionInformations} movieSession={movieSession}/>
                 :
                 null
             }

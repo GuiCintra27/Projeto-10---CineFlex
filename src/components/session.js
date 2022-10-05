@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function Session({ sessionDay, day, date, hours, setTitle, setSessionInformations }) {
+export default function Session({ sessionDay, weekday, date, hours, setTitle, setSessionInformations }) {
     function buyTicket(day, hour){
         setTitle('Selecione o(s) assento(s)');
         setSessionInformations({isTrue: true, day: day, hour: hour});
@@ -8,10 +8,10 @@ export default function Session({ sessionDay, day, date, hours, setTitle, setSes
 
     return (
         <>
-            <h1>{day} - {date}</h1>
+            <h1>{weekday} - {date}</h1>
             <SelectSession>
                 {hours.map((item, index) => (
-                    <button key={index} onClick={() => buyTicket(sessionDay, index)}>{item.hour}</button>
+                    <button key={index} onClick={() => buyTicket(sessionDay, index)}>{item.name}</button>
                 ))}
             </SelectSession>
         </>
