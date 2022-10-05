@@ -2,61 +2,112 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Loading from "./loading";
+import SeatInformations from "./seatInformations";
+import Seats from "./seats";
 
-export default function BuyTicket({ sessionId }) {
-    const [seatAvailable, setSeatAvailable] = useState('var(--seat-available)');
-    const [availableBorder, setAvailableBorder] = useState('var(--seat-available-border)');
+export default function BuyTicket({sessionId, buyersName, setBuyersName, cpf, setCpf, selectedSeats, setSelectedSeats, setRequestTicket}) {
     const [seats, setSeats] = useState('');
 
-    function selectSeat() {
-        setSeatAvailable('var(--selected-seat)');
-        setAvailableBorder('var(--selected-seat-border)');
-    }
-
     useEffect(() => {
-        const seatsURL = `https://mock-api.driven.com.br/api/v5/cineflex/movies/${sessionId}/showtimes`;
+        const seatsURL = `https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${sessionId}/seats`;
 
         axios.get(seatsURL).then(response => {
-            setSeats(response.data);
+            const data = response.data;
+            setSeats(data.seats);
         })
 
         axios.get(seatsURL).catch(err => {
             console.log(err.response.data);
         })
-    }, [seats])
+    }, [])
+
+    function confirmRequest() {
+        if (buyersName.length > 2 && cpf.length === 11) {
+            setRequestTicket('buyed');
+        }
+    }
 
     if (seats.length === 0) {
-        return <Loading/>
+        return <Loading />
     }
 
     return (
         <>
             <SeatOptions>
-                {seats.map((item) => (
-                    <Seat
-                        color={item.isAvailable ? seatAvailable : 'var(--seat-unavailable)'}
-                        border={item.isAvailable ? availableBorder : 'var(--seat-unavailable-border)'}
-                        onClick={selectSeat} >
-                        {item.name}
-                    </Seat>
+                {seats.map((item, index) => (
+                    <Seats key={index} item={item} index={index} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} />
                 ))}
             </SeatOptions>
+            <SeatInformations />
+            <Inputs>
+                <div>
+                    <label>Nome do comprador:</label>
+                    <input placeholder="Digite seu nome..." onChange={(e) => setBuyersName(e.target.value)} />
+                </div>
+                <div>
+                    <label>CPF do comprador:</label>
+                    <input placeholder="Digite seu CPF..." onChange={(e) => setCpf(e.target.value)} />
+                </div>
+            </Inputs>
+            <Button><button onClick={confirmRequest}>Reservar assento(s)</button></Button>
         </>
     );
 }
-
-const Seat = styled.button`
-    margin-bottom: 1rem;
-    width: 2.6rem;
-    height: 2.6rem;
-    background-color: ${props => props.color};
-    border: 1px solid  ${props => props.border};
-    border-radius: 100%;
-`;
 
 const SeatOptions = styled.div`
     padding-inline: 2rem;
     gap: .8rem;
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 1.6rem;
+`;
+
+const Inputs = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .7rem;
+
+    div{
+        display: flex;
+        flex-direction: column;
+    }
+
+    label{
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    input{
+        width: 32.7rem;
+        height: 5rem;
+        padding-left: 1.8rem;
+        border: 1px solid var(--input-border);
+        border-radius: 3px;
+    }
+
+    input::placeholder{
+        font-size: 18px;
+        font-weight: 400;
+        font-style: italic;
+        color: #AFAFAF;
+    }
+`;
+
+const Button = styled.div`
+    margin-top: 5.7rem;
+    display: flex;
+    justify-content: center;
+
+    button{
+        width: 22.5rem;
+        height: 4.2rem;
+        border: none;
+        border-radius: 3px;
+        background-color: var(--orange);
+        color: #FFFFFF;
+        font-size: 18px;
+        font-weight: 400;
+    }
 `;

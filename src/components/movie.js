@@ -1,13 +1,15 @@
 import styled from "styled-components";
 
-export default function Movie({id, movie, cover, setSelected, setTitle, setMovieSession}){
-    function select(){
-        setSelected(id);
+export default function Movie({ id, movie, cover, setSelected, setTitle, setMovieSession }) {
+    function select() {
+        setSelected({id: id, status: true, footer: true});
         setTitle('Selecione o horário');
         setMovieSession(false)
     }
 
-    return(
+
+
+    return (
         <MovieInPoster>
             <img src={cover} alt={movie} onClick={select} />
         </MovieInPoster>

@@ -5,8 +5,9 @@ import GlobalStyle from "./globalStyle";
 import Header from "./header";
 
 export default function App() {
-    const [selected, setSelected] = useState(false);
+    const [selected, setSelected] = useState({status: false, footer:false});
     const [movieSession, setMovieSession] = useState('');
+    const [movieSessionInfo, setMovieSessionInfo] = useState([]);
     const [sessionInformations, setSessionInformations] = useState({isTrue: false});
 
     return (
@@ -14,8 +15,8 @@ export default function App() {
             <GlobalStyle />
             <Header />
             <Body selected={selected} setSelected={setSelected} sessionInformations={sessionInformations} setSessionInformations={setSessionInformations} movieSession={movieSession} setMovieSession={setMovieSession}/>
-            {selected !== false ?
-                <Footer sessionInformations={sessionInformations} movieSession={movieSession}/>
+            {selected.footer !== false ?
+                <Footer movieSessionInfo={movieSessionInfo} setMovieSessionInfo={setMovieSessionInfo} sessionInformations={sessionInformations} movieSession={movieSession}/>
                 :
                 null
             }

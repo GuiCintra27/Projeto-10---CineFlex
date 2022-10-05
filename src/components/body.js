@@ -5,10 +5,17 @@ import Session from "./session";
 import BuyTicket from "./buyTicket";
 import axios from "axios";
 import Loading from "./loading";
+import SucessfullyOrder from "./sucessfullyOrder";
 
 export default function Body({ selected, setSelected, sessionInformations, setSessionInformations, movieSession, setMovieSession }) {
-    const [movieList, setMovieList] = useState('');
     const [title, setTitle] = useState('Selecione o filme');
+    const [titleStyle, setTitleStyle] = useState(['black', '400']);
+    const [movieList, setMovieList] = useState('');
+    const [selectedSeats, setSelectedSeats] = useState('');
+    const [buyersName, setBuyersName] = useState('');
+    const [cpf, setCpf] = useState('');
+    const [requestTicket, setRequestTicket] = useState(false);
+    const buy = { ids: selectedSeats, name: buyersName, cpf: cpf };
 
     useEffect(() => {
         const listURL = 'https://mock-api.driven.com.br/api/v5/cineflex/movies';
@@ -20,11 +27,11 @@ export default function Body({ selected, setSelected, sessionInformations, setSe
         axios.get(listURL).catch(err => {
             console.log(err.response.data);
         })
-    }, [movieList]);
+    }, []);
 
     useEffect(() => {
         if (movieSession === false) {
-            const sessionsURL = `https://mock-api.driven.com.br/api/v5/cineflex/movies/${movieList[selected - 1].id}/showtimes`;
+            const sessionsURL = `https://mock-api.driven.com.br/api/v5/cineflex/movies/${movieList[selected.id - 1].id}/showtimes`;
 
             axios.get(sessionsURL).then(response => {
                 setMovieSession(response.data);
@@ -34,7 +41,23 @@ export default function Body({ selected, setSelected, sessionInformations, setSe
                 console.log(err.response.data);
             })
         }
-    }, [movieSession])
+    }, [movieSession]);
+
+    useEffect(() => {
+        if (selectedSeats.length > 0) {
+            const buyURL = 'https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many';
+
+            axios.post(buyURL, buy).then(response => {
+                setSelected({id: selected.id, status: true, footer:false});
+                setRequestTicket(true);
+                setTitle('Pedido feito com sucesso!');
+            })
+
+            axios.post(buyURL, buy).catch(err => {
+                console.log(err.response.data)
+            })
+        }
+    }, [requestTicket]);
 
     if (movieList.length === 0 || (movieList.length > 0 && movieSession === false)) {
         return <Loading />
@@ -42,10 +65,10 @@ export default function Body({ selected, setSelected, sessionInformations, setSe
 
     return (
         <>
-            <Title>
+            <Title color={titleStyle[0]} fontWeigth={titleStyle[1]}>
                 {title}
             </Title>
-            {(selected === false) ?
+            {(selected.status === false) ?
                 <Poster>
                     {movieList.map((item, index) => (
                         <Movie key={index} id={item.id} movie={item.title} cover={item.posterURL} setSelected={setSelected} setTitle={setTitle} setMovieSession={setMovieSession} />
@@ -53,7 +76,10 @@ export default function Body({ selected, setSelected, sessionInformations, setSe
                 </Poster>
                 :
                 (sessionInformations.isTrue ?
-                    <BuyTicket sessionId={movieList[selected - 1].id} />
+                    (requestTicket ?
+                        <SucessfullyOrder movie={movieList[selected.id - 1].title} titleStyle={titleStyle} setTitleStyle={setTitleStyle} buyerInformation={buy}/>
+                        :
+                        <BuyTicket sessionId={sessionInformations.sessionId} buyersName={buyersName} setBuyersName={setBuyersName} cpf={cpf} setCpf={setCpf} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} setRequestTicket={setRequestTicket} setTitle={setTitle} />)
                     :
                     <SessionInformations>
                         {movieSession.days.map((item, index) => (
@@ -67,12 +93,13 @@ export default function Body({ selected, setSelected, sessionInformations, setSe
 
 const Title = styled.div`
     width: 100%;
-    height: 110px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 24px;
-    font-weight: 400;
+    font-weight: ${props => props.fontWeigth};
+    color: ${props => props.color};
 `;
 
 const Poster = styled.div`
