@@ -1,18 +1,13 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export default function Movie({ id, movie, cover, setSelected, setTitle, setMovieSession }) {
-    function select() {
-        setSelected({id: id, status: true, footer: true});
-        setTitle('Selecione o horário');
-        setMovieSession(false)
-    }
-
-
-
+export default function Movie({ id, movie, cover }) {
     return (
-        <MovieInPoster>
-            <img src={cover} alt={movie} onClick={select} />
-        </MovieInPoster>
+        <Link to={`/sessoes/${id}`}>
+            <MovieInPoster>
+                <img src={cover} alt={movie}/>
+            </MovieInPoster>
+        </Link>
     );
 }
 

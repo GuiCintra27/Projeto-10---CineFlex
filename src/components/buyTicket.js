@@ -1,19 +1,31 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Loading from "./loading";
+import Title from "./title";
 import SeatInformations from "./seatInformations";
 import Seats from "./seats";
+import Footer from "./footer";
 
-export default function BuyTicket({sessionId, buyersName, setBuyersName, cpf, setCpf, selectedSeats, setSelectedSeats, setRequestTicket}) {
+export default function BuyTicket() {
+    const { id } = useParams();
+    const [sessionInformations, setSessionInformations] = useState('');
     const [seats, setSeats] = useState('');
-    const [clickedSeats, setClickedSeats] = useState({id: [], name: []});
+    const [buyersName, setBuyersName] = useState('');
+    const [cpf, setCpf] = useState('');
+    const [selectedSeats, setSelectedSeats] = useState({ id: [], name: [] });
+    const [requestTicket, setRequestTicket] = useState(false);
+    const [isDisable, setIsDisable] = useState(true);
+    const buy = { ids: selectedSeats.id, name: buyersName, cpf: cpf };
+
 
     useEffect(() => {
-        const seatsURL = `https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${sessionId}/seats`;
+        const seatsURL = `https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${id}/seats`;
 
         axios.get(seatsURL).then(response => {
             const data = response.data;
+            setSessionInformations(data);
             setSeats(data.seats);
         })
 
@@ -22,10 +34,25 @@ export default function BuyTicket({sessionId, buyersName, setBuyersName, cpf, se
         })
     }, [])
 
+    useEffect(() => {
+        if (requestTicket === 'sold') {
+            const buyURL = 'https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many';
+
+            axios.post(buyURL, buy).then(response => {
+                window.open(`/ingresso/${buy, sessionInformations}`, '_self');
+            })
+
+            axios.post(buyURL, buy).catch(err => {
+                console.log(err.response.data);
+            })
+        }
+    }, [requestTicket]);
+
     function confirmRequest() {
-        if (buyersName.length > 2 && cpf.length === 11 && clickedSeats.id.length > 0) {
-            setRequestTicket('buyed');
-            setSelectedSeats({id: [...clickedSeats.id], name: [...clickedSeats.name]})
+        if (!isDisable) {
+            setRequestTicket('sold')
+        } else {
+            alert('Alguma informação foi inserida incorretamente!')
         }
     }
 
@@ -35,23 +62,39 @@ export default function BuyTicket({sessionId, buyersName, setBuyersName, cpf, se
 
     return (
         <>
+            <Title color='black' fontWeigth='400'>
+                Selecione o(s) assento(s)
+            </Title>
             <SeatOptions>
                 {seats.map((item, index) => (
-                    <Seats key={index} item={item} index={index} clickedSeats={clickedSeats} setClickedSeats={setClickedSeats} />
+                    <Seats key={index} item={item} index={index} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} />
                 ))}
             </SeatOptions>
             <SeatInformations />
             <Inputs>
                 <div>
                     <label>Nome do comprador:</label>
-                    <input placeholder="Digite seu nome..." onChange={(e) => setBuyersName(e.target.value)} />
+                    <input placeholder="Digite seu nome..." onChange={(e) => {
+                        if (buyersName.length + 1 > 2 && cpf.length === 11 && selectedSeats.id.length > 0) {
+                            setIsDisable(false);
+                        } else {
+                            setIsDisable(true);
+                        } setBuyersName(e.target.value)
+                    }} />
                 </div>
                 <div>
                     <label>CPF do comprador:</label>
-                    <input placeholder="Digite seu CPF..." onChange={(e) => setCpf(e.target.value)} pattern='[0-9] {11}'/>
+                    <input placeholder="Digite seu CPF..." onChange={(e) => {
+                        if (buyersName.length > 2 && cpf.length + 1 === 11 && selectedSeats.id.length > 0) {
+                            setIsDisable(false);
+                        } else {
+                            setIsDisable(true);
+                        } setCpf(e.target.value)
+                    }} pattern='[0-9] {11}' />
                 </div>
             </Inputs>
-            <Button><button onClick={confirmRequest}>Reservar assento(s)</button></Button>
+            <Button><button disabled={isDisable ? 'disabled' : null} onClick={confirmRequest}>Reservar assento(s)</button></Button>
+            <Footer sessionInformations={sessionInformations}/>
         </>
     );
 }
@@ -111,5 +154,9 @@ const Button = styled.div`
         color: #FFFFFF;
         font-size: 18px;
         font-weight: 400;
+    }
+
+    a{
+        color: #FFFFFF;
     }
 `;

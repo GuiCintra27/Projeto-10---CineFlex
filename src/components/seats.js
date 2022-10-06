@@ -1,27 +1,33 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function Seats({ item, index, clickedSeats, setClickedSeats }) {
+export default function Seats({ item, index, selectedSeats, setSelectedSeats }) {
     const [seatAvailable, setSeatAvailable] = useState('var(--seat-available)');
     const [availableBorder, setAvailableBorder] = useState('var(--seat-available-border)');
 
     function selectSeat(id, name) {
-        if (!clickedSeats.id.includes(id)) {
-            setClickedSeats({ id: [...clickedSeats.id, id], name: [...clickedSeats.name, name] });
+        if (buyersName.length > 2 && cpf.length + 1 === 11 && selectedSeats.id.length > 0) {
+            setIsDisable(false);
+        } else {
+            setIsDisable(true);
+        }
+        
+        if (!selectedSeats.id.includes(id)) {
+            setSelectedSeats({ id: [...selectedSeats.id, id], name: [...selectedSeats.name, name] });
             setSeatAvailable('var(--selected-seat)');
             setAvailableBorder('var(--selected-seat-border)');
         } else {
 
             let seats = {id: [], name: []};
             
-            clickedSeats.id.forEach((item, index) => {
+            selectedSeats.id.forEach((item, index) => {
                 if (item !== id) {
                     seats.id.push(item);
-                    seats.name.push(clickedSeats.name[index]);
+                    seats.name.push(selectedSeats.name[index]);
                 }
             });
 
-            setClickedSeats({ id: [...seats.id], name: [...seats.name] });
+            setSelectedSeats({ id: [...seats.id], name: [...seats.name] });
             setSeatAvailable('var(--seat-available)');
             setAvailableBorder('var(--seat-available-border)');
         }

@@ -1,17 +1,15 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export default function Session({ sessionDay, weekday, date, hours, setTitle, setSessionInformations }) {
-    function buyTicket(day, hour, sessionId){
-        setTitle('Selecione o(s) assento(s)');
-        setSessionInformations({isTrue: true, day: day, hour: hour, sessionId: sessionId});
-    }
-
+export default function Session({ weekday, date, hours}) {
     return (
         <>
             <h1>{weekday} - {date}</h1>
             <SelectSession>
                 {hours.map((item, index) => (
-                    <button key={index} onClick={() => buyTicket(sessionDay, index, item.id)}>{item.name}</button>
+                    <Link to={`/sessao/${item.id}`}>
+                        <button key={index}>{item.name}</button>
+                    </Link>
                 ))}
             </SelectSession>
         </>

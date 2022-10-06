@@ -1,9 +1,15 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-export default function SucessfullyOrder({ movie, sessionInformations, selectedSeats, buyerInformation, movieSession, titleStyle, setTitleStyle }) {
-    const sessions = movieSession.days;
+export default function SucessfullyOrder() {
+    const {buy, sessionInformations} = useParams();
+
+    console.log(sessionInformations)
+    /* const sessions = movieSession.days;
     let day, hour;
     
+    { movie, sessionInformations, selectedSeats, buyerInformation, movieSession}
+
     if (sessions) {
         day = sessions[sessionInformations.day];
         if (day) {
@@ -11,16 +17,12 @@ export default function SucessfullyOrder({ movie, sessionInformations, selectedS
         }
     }
 
-    if (titleStyle[0] === 'black') {
-        setTitleStyle(['var(--succesful-order)', '700']);
-    }
-
     let cpf = buyerInformation.cpf;
 
     cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,
     function (regex, argumento1, argumento2, argumento3, argumento4) {
         return argumento1 + '.' + argumento2 + '.' + argumento3 + ' - ' + argumento4;
-    })
+    }) */
 
 
 
@@ -28,11 +30,10 @@ export default function SucessfullyOrder({ movie, sessionInformations, selectedS
         <>
             <Informations>
                 <h1>Filme e sessão</h1>
-                <p>{movie}</p>
-                <p>{day.date} {hour.name}</p>
+                
             </Informations>
 
-            <Informations>
+       {/*      <Informations>
                 <h1>Ingressos</h1>
                 {selectedSeats.name.map((item, index) => (
                     <p key={index}>{item}</p>
@@ -45,7 +46,7 @@ export default function SucessfullyOrder({ movie, sessionInformations, selectedS
                 <p>CPF: {cpf}</p>
             </Informations>
 
-            <Button><button>Voltar para Home</button></Button>
+            <Button><button>Voltar para Home</button></Button> */}
         </>
     );
 }

@@ -1,24 +1,28 @@
 import styled from "styled-components";
 
-export default function Footer({ sessionInformations, movieSession }) {
-    const sessions = movieSession.days;
+export default function Footer({ sessionInformations }) {
+    let seatSection = false;
+    if (sessionInformations.seats){
+        seatSection = true;
+    }
+/*     const sessions = sessionInformations.days;
     let day, hour;
     if (sessions){
         day = sessions[sessionInformations.day];
         if(day){
             hour = day.showtimes[sessionInformations.hour];
         }
-    }
+    } */
 
     return (
         <MovieSelected>
             <MovieInPoster>
-                <img src={movieSession.posterURL} alt={movieSession.title} />
+                <img src={seatSection ? sessionInformations.movie.posterURL : sessionInformations.posterURL} alt={seatSection ? sessionInformations.movie.title : sessionInformations.title} />
             </MovieInPoster>
             <MovieInformations>
-                <h1>{movieSession.title}</h1>
-                {sessionInformations.isTrue ?
-                    <h1>{day.weekday} - {hour.name}</h1>
+                <h1>{seatSection ? sessionInformations.movie.title : sessionInformations.title}</h1>
+                {seatSection ?
+                    <h1>{sessionInformations.day.weekday} - {sessionInformations.name}</h1>
                     :
                     null
                 }
