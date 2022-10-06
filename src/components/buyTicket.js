@@ -7,6 +7,7 @@ import Seats from "./seats";
 
 export default function BuyTicket({sessionId, buyersName, setBuyersName, cpf, setCpf, selectedSeats, setSelectedSeats, setRequestTicket}) {
     const [seats, setSeats] = useState('');
+    const [clickedSeats, setClickedSeats] = useState({id: [], name: []});
 
     useEffect(() => {
         const seatsURL = `https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${sessionId}/seats`;
@@ -22,8 +23,9 @@ export default function BuyTicket({sessionId, buyersName, setBuyersName, cpf, se
     }, [])
 
     function confirmRequest() {
-        if (buyersName.length > 2 && cpf.length === 11) {
+        if (buyersName.length > 2 && cpf.length === 11 && clickedSeats.id.length > 0) {
             setRequestTicket('buyed');
+            setSelectedSeats({id: [...clickedSeats.id], name: [...clickedSeats.name]})
         }
     }
 
@@ -35,7 +37,7 @@ export default function BuyTicket({sessionId, buyersName, setBuyersName, cpf, se
         <>
             <SeatOptions>
                 {seats.map((item, index) => (
-                    <Seats key={index} item={item} index={index} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} />
+                    <Seats key={index} item={item} index={index} clickedSeats={clickedSeats} setClickedSeats={setClickedSeats} />
                 ))}
             </SeatOptions>
             <SeatInformations />
@@ -46,7 +48,7 @@ export default function BuyTicket({sessionId, buyersName, setBuyersName, cpf, se
                 </div>
                 <div>
                     <label>CPF do comprador:</label>
-                    <input placeholder="Digite seu CPF..." onChange={(e) => setCpf(e.target.value)} />
+                    <input placeholder="Digite seu CPF..." onChange={(e) => setCpf(e.target.value)} pattern='[0-9] {11}'/>
                 </div>
             </Inputs>
             <Button><button onClick={confirmRequest}>Reservar assento(s)</button></Button>

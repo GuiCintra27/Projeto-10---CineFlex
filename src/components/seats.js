@@ -1,14 +1,30 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function Seats({item, index, selectedSeats, setSelectedSeats}) {
+export default function Seats({ item, index, clickedSeats, setClickedSeats }) {
     const [seatAvailable, setSeatAvailable] = useState('var(--seat-available)');
     const [availableBorder, setAvailableBorder] = useState('var(--seat-available-border)');
 
     function selectSeat(id, name) {
-        setSelectedSeats({id: [...selectedSeats.id, id], name: [...selectedSeats.name, name]});
-        setSeatAvailable('var(--selected-seat)');
-        setAvailableBorder('var(--selected-seat-border)');
+        if (!clickedSeats.id.includes(id)) {
+            setClickedSeats({ id: [...clickedSeats.id, id], name: [...clickedSeats.name, name] });
+            setSeatAvailable('var(--selected-seat)');
+            setAvailableBorder('var(--selected-seat-border)');
+        } else {
+
+            let seats = {id: [], name: []};
+            
+            clickedSeats.id.forEach((item, index) => {
+                if (item !== id) {
+                    seats.id.push(item);
+                    seats.name.push(clickedSeats.name[index]);
+                }
+            });
+
+            setClickedSeats({ id: [...seats.id], name: [...seats.name] });
+            setSeatAvailable('var(--seat-available)');
+            setAvailableBorder('var(--seat-available-border)');
+        }
     }
 
     return (
@@ -16,7 +32,7 @@ export default function Seats({item, index, selectedSeats, setSelectedSeats}) {
             key={index}
             color={item.isAvailable ? seatAvailable : 'var(--seat-unavailable)'}
             border={item.isAvailable ? availableBorder : 'var(--seat-unavailable-border)'}
-            onClick={item.isAvailable ? () => selectSeat(item.id, item.name) : null}>
+            onClick={item.isAvailable ? () => selectSeat(item.id, item.name) : () => alert('Esse assento não está disponível!')}>
             {item.name}
         </Seat>
     );
