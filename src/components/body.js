@@ -12,12 +12,9 @@ export default function Body() {
                     <Route path="/" element={<Home />} />
                     <Route path="/sessoes/:id" element={<Sessions />} />
                     <Route path="/sessao/:id" element={<BuyTicket />} />
-                    <Route path='/ingresso/:id' element={<SucessfullyOrder />} />
+                    <Route path='/ingresso/:seats/:name/:cpf/:movie/:date/:hour' element={<SucessfullyOrder />} />
                 </Routes>
             </BrowserRouter>
-            {/*  (sessionInformations.isTrue ?
-                        <BuyTicket sessionId={sessionInformations.sessionId} buyersName={buyersName} setBuyersName={setBuyersName} cpf={cpf} setCpf={setCpf} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} setRequestTicket={setRequestTicket} setTitle={setTitle} />)
-                    */}
         </>
     );
 }

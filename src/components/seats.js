@@ -1,21 +1,19 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function Seats({ item, index, selectedSeats, setSelectedSeats }) {
+export default function Seats({ item, selectedSeats, setSelectedSeats, buyersName, cpf, setIsDisable }) {
     const [seatAvailable, setSeatAvailable] = useState('var(--seat-available)');
     const [availableBorder, setAvailableBorder] = useState('var(--seat-available-border)');
 
     function selectSeat(id, name) {
-        if (buyersName.length > 2 && cpf.length + 1 === 11 && selectedSeats.id.length > 0) {
-            setIsDisable(false);
-        } else {
-            setIsDisable(true);
-        }
-        
         if (!selectedSeats.id.includes(id)) {
             setSelectedSeats({ id: [...selectedSeats.id, id], name: [...selectedSeats.name, name] });
             setSeatAvailable('var(--selected-seat)');
             setAvailableBorder('var(--selected-seat-border)');
+
+            if (buyersName.length > 2 && cpf.length === 11) {
+                setIsDisable(false);
+            }
         } else {
 
             let seats = {id: [], name: []};
@@ -27,6 +25,12 @@ export default function Seats({ item, index, selectedSeats, setSelectedSeats }) 
                 }
             });
 
+            if (buyersName.length > 2 && cpf.length === 11 && seats.id.length > 0) {
+                setIsDisable(false);
+            } else {
+                setIsDisable(true);
+            }
+
             setSelectedSeats({ id: [...seats.id], name: [...seats.name] });
             setSeatAvailable('var(--seat-available)');
             setAvailableBorder('var(--seat-available-border)');
@@ -35,7 +39,6 @@ export default function Seats({ item, index, selectedSeats, setSelectedSeats }) 
 
     return (
         <Seat
-            key={index}
             color={item.isAvailable ? seatAvailable : 'var(--seat-unavailable)'}
             border={item.isAvailable ? availableBorder : 'var(--seat-unavailable-border)'}
             onClick={item.isAvailable ? () => selectSeat(item.id, item.name) : () => alert('Esse assento não está disponível!')}>

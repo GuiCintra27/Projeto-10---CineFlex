@@ -19,7 +19,6 @@ export default function BuyTicket() {
     const [isDisable, setIsDisable] = useState(true);
     const buy = { ids: selectedSeats.id, name: buyersName, cpf: cpf };
 
-
     useEffect(() => {
         const seatsURL = `https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${id}/seats`;
 
@@ -37,10 +36,11 @@ export default function BuyTicket() {
     useEffect(() => {
         if (requestTicket === 'sold') {
             const buyURL = 'https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many';
+            const date = sessionInformations.day.date.split('/');
 
             axios.post(buyURL, buy).then(response => {
-                window.open(`/ingresso/${buy, sessionInformations}`, '_self');
-            })
+                window.open(`/ingresso/${selectedSeats.name}/${buy.name}/${cpf}/${sessionInformations.movie.title}/${date}/${sessionInformations.name}`, '_self')
+            });
 
             axios.post(buyURL, buy).catch(err => {
                 console.log(err.response.data);
@@ -67,7 +67,7 @@ export default function BuyTicket() {
             </Title>
             <SeatOptions>
                 {seats.map((item, index) => (
-                    <Seats key={index} item={item} index={index} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} />
+                    <Seats key={index} item={item} index={index} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} buyersName={buyersName} cpf={cpf} setIsDisable={setIsDisable} />
                 ))}
             </SeatOptions>
             <SeatInformations />
@@ -94,7 +94,7 @@ export default function BuyTicket() {
                 </div>
             </Inputs>
             <Button><button disabled={isDisable ? 'disabled' : null} onClick={confirmRequest}>Reservar assento(s)</button></Button>
-            <Footer sessionInformations={sessionInformations}/>
+            <Footer sessionInformations={sessionInformations} />
         </>
     );
 }

@@ -1,52 +1,39 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
+import Title from "./title";
 
 export default function SucessfullyOrder() {
-    const {buy, sessionInformations} = useParams();
+    const { seats, name, cpf, movie, date, hour } = useParams();
 
-    console.log(sessionInformations)
-    /* const sessions = movieSession.days;
-    let day, hour;
-    
-    { movie, sessionInformations, selectedSeats, buyerInformation, movieSession}
-
-    if (sessions) {
-        day = sessions[sessionInformations.day];
-        if (day) {
-            hour = day.showtimes[sessionInformations.hour];
-        }
-    }
-
-    let cpf = buyerInformation.cpf;
-
-    cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,
-    function (regex, argumento1, argumento2, argumento3, argumento4) {
-        return argumento1 + '.' + argumento2 + '.' + argumento3 + ' - ' + argumento4;
-    }) */
-
-
+    const seat = seats.split(',');
+    const fullDate = date.split(',');
 
     return (
         <>
+            <Title color='var(--succesful-order)' fontWeigth='700'>
+                Pedido feito com sucesso!
+            </Title>
+
             <Informations>
                 <h1>Filme e sessão</h1>
-                
+                <p>{movie}</p>
+                <p>{`${fullDate[0]}/${fullDate[1]}/${fullDate[2]}`}- {hour}</p>
             </Informations>
 
-       {/*      <Informations>
+            <Informations>
                 <h1>Ingressos</h1>
-                {selectedSeats.name.map((item, index) => (
-                    <p key={index}>{item}</p>
+                {seat.map((item, index) => (
+                    <p key={index}>Assento {item}</p>
                 ))}
             </Informations>
 
             <Informations>
                 <h1>Comprador</h1>
-                <p>Nome: {buyerInformation.name}</p>
+                <p>Nome: {name}</p>
                 <p>CPF: {cpf}</p>
             </Informations>
 
-            <Button><button>Voltar para Home</button></Button> */}
+            <Button><Link to="/">Voltar para Home</Link></Button>
         </>
     );
 }
@@ -73,7 +60,9 @@ const Button = styled.div`
     display: flex;
     justify-content: center;
 
-    button{
+    a{  
+        text-align: center;
+        padding-top: .85rem;
         width: 22.5rem;
         height: 4.2rem;
         border: none;
