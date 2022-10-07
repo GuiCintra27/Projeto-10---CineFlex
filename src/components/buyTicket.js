@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Loading from "./loading";
 import Title from "./title";
@@ -65,35 +65,37 @@ export default function BuyTicket() {
             <Title color='black' fontWeigth='400'>
                 Selecione o(s) assento(s)
             </Title>
-            <SeatOptions>
-                {seats.map((item, index) => (
-                    <Seats key={index} item={item} index={index} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} buyersName={buyersName} cpf={cpf} setIsDisable={setIsDisable} />
-                ))}
-            </SeatOptions>
-            <SeatInformations />
-            <Inputs>
-                <div>
-                    <label>Nome do comprador:</label>
-                    <input placeholder="Digite seu nome..." onChange={(e) => {
-                        if (buyersName.length + 1 > 2 && cpf.length === 11 && selectedSeats.id.length > 0) {
-                            setIsDisable(false);
-                        } else {
-                            setIsDisable(true);
-                        } setBuyersName(e.target.value)
-                    }} />
-                </div>
-                <div>
-                    <label>CPF do comprador:</label>
-                    <input placeholder="Digite seu CPF..." onChange={(e) => {
-                        if (buyersName.length > 2 && cpf.length + 1 === 11 && selectedSeats.id.length > 0) {
-                            setIsDisable(false);
-                        } else {
-                            setIsDisable(true);
-                        } setCpf(e.target.value)
-                    }} pattern='[0-9] {11}' />
-                </div>
-            </Inputs>
-            <Button><button disabled={isDisable ? 'disabled' : null} onClick={confirmRequest}>Reservar assento(s)</button></Button>
+            <Content>
+                <SeatOptions>
+                    {seats.map((item, index) => (
+                        <Seats key={index} item={item} index={index} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} buyersName={buyersName} cpf={cpf} setIsDisable={setIsDisable} />
+                    ))}
+                </SeatOptions>
+                <SeatInformations />
+                <Inputs>
+                    <div>
+                        <label>Nome do comprador:</label>
+                        <input placeholder="Digite seu nome..." onChange={(e) => {
+                            if (buyersName.length + 1 > 2 && cpf.length === 11 && selectedSeats.id.length > 0) {
+                                setIsDisable(false);
+                            } else {
+                                setIsDisable(true);
+                            } setBuyersName(e.target.value)
+                        }} />
+                    </div>
+                    <div>
+                        <label>CPF do comprador:</label>
+                        <input placeholder="Digite seu CPF..." onChange={(e) => {
+                            if (buyersName.length > 2 && cpf.length + 1 === 11 && selectedSeats.id.length > 0) {
+                                setIsDisable(false);
+                            } else {
+                                setIsDisable(true);
+                            } setCpf(e.target.value)
+                        }} pattern='[0-9] {11}' />
+                    </div>
+                </Inputs>
+                <Button><button disabled={isDisable ? 'disabled' : null} onClick={confirmRequest}>Reservar assento(s)</button></Button>
+            </Content>
             <Footer sessionInformations={sessionInformations} />
         </>
     );
@@ -105,6 +107,12 @@ const SeatOptions = styled.div`
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 1.6rem;
+`;
+
+const Content = styled.div`
+    height: calc(100vh - 22.7rem - 6.7rem);
+    overflow-y: scroll;
+    margin-bottom: 1.8rem;
 `;
 
 const Inputs = styled.div`
