@@ -5,6 +5,11 @@ import Title from "./title";
 export default function SucessfullyOrder() {
     const { seats, name, cpf, movie, date, hour } = useParams();
 
+    let cpfStyled = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,
+        function (regex, argumento1, argumento2, argumento3, argumento4) {
+            return argumento1 + '.' + argumento2 + '.' + argumento3 + '-' + argumento4;
+        })
+
     const seat = seats.split(',');
     const fullDate = date.split(',');
 
@@ -30,7 +35,7 @@ export default function SucessfullyOrder() {
             <Informations>
                 <h1>Comprador</h1>
                 <p>Nome: {name}</p>
-                <p>CPF: {cpf}</p>
+                <p>CPF: {cpfStyled}</p>
             </Informations>
 
             <Button><Link to="/">Voltar para Home</Link></Button>
