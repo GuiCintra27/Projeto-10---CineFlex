@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function Title({ color, fontWeigth, children }) {
+export default function Title({ color='black', fontWeigth='400', children }) {
     return (
         <SectionTitle color={color} fontWeigth={fontWeigth}>
             {children}

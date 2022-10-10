@@ -7,7 +7,7 @@ export default function Session({ weekday, date, hours}) {
             <h1>{weekday} - {date}</h1>
             <SelectSession>
                 {hours.map((item, index) => (
-                    <Link key={index} to={`/sessao/${item.id}`}>
+                    <Link key={index} to={`/assentos/${item.id}`}>
                         <button>{item.name}</button>
                     </Link>
                 ))}

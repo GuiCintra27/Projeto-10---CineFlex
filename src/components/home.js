@@ -26,7 +26,7 @@ export default function Home() {
 
     return (
         <>
-            <Title color='black' fontWeigth='400'>
+            <Title>
                 Selecione o filme
             </Title>
             <Poster>

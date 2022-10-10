@@ -1,19 +1,7 @@
 import styled from "styled-components";
 
 export default function Footer({ sessionInformations }) {
-    let seatSection = false;
-    if (sessionInformations.seats){
-        seatSection = true;
-    }
-/*     const sessions = sessionInformations.days;
-    let day, hour;
-    if (sessions){
-        day = sessions[sessionInformations.day];
-        if(day){
-            hour = day.showtimes[sessionInformations.hour];
-        }
-    } */
-
+    const seatSection = sessionInformations.seats;
     return (
         <MovieSelected>
             <MovieInPoster>

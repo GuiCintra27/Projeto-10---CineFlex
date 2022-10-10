@@ -11,8 +11,8 @@ export default function Body() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/sessoes/:id" element={<Sessions />} />
-                    <Route path="/sessao/:id" element={<BuyTicket />} />
-                    <Route path='/ingresso/:seats/:name/:cpf/:movie/:date/:hour' element={<SucessfullyOrder />} />
+                    <Route path="/assentos/:id" element={<BuyTicket />} />
+                    <Route path='/sucesso/:seats/:name/:cpf/:movie/:date/:hour' element={<SucessfullyOrder />} />
                 </Routes>
             </BrowserRouter>
         </>

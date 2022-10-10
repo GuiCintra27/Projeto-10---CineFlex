@@ -30,7 +30,7 @@ export default function Sessions() {
 
     return (
         <>
-            <Title color='black' fontWeigth='400'>
+            <Title>
                 Selecione o horário
             </Title>
             <SessionsInformations>

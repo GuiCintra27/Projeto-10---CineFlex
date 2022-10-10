@@ -7,6 +7,7 @@ import Title from "./title";
 import SeatInformations from "./seatInformations";
 import Seats from "./seats";
 import Footer from "./footer";
+import verifyCpf from "./verifyCPF";
 
 export default function BuyTicket() {
     const { id } = useParams();
@@ -16,7 +17,6 @@ export default function BuyTicket() {
     const [cpf, setCpf] = useState('');
     const [selectedSeats, setSelectedSeats] = useState({ id: [], name: [] });
     const [requestTicket, setRequestTicket] = useState(false);
-    const [isDisable, setIsDisable] = useState(true);
     const buy = { ids: selectedSeats.id, name: buyersName, cpf: cpf };
 
     useEffect(() => {
@@ -39,7 +39,7 @@ export default function BuyTicket() {
             const date = sessionInformations.day.date.split('/');
 
             axios.post(buyURL, buy).then(response => {
-                window.open(`/ingresso/${selectedSeats.name}/${buy.name}/${cpf}/${sessionInformations.movie.title}/${date}/${sessionInformations.name}`, '_self')
+                window.open(`/sucesso/${selectedSeats.name}/${buy.name}/${cpf}/${sessionInformations.movie.title}/${date}/${sessionInformations.name}`, '_self')
             });
 
             axios.post(buyURL, buy).catch(err => {
@@ -49,10 +49,18 @@ export default function BuyTicket() {
     }, [requestTicket]);
 
     function confirmRequest() {
-        if (!isDisable) {
-            setRequestTicket('sold')
+        if (buyersName.length > 2) {
+            if (verifyCpf(cpf)){
+                if(selectedSeats.id.length > 0){
+                    setRequestTicket('sold');
+                }else{
+                    alert('Acentos não selecionados!');
+                }
+            }else{
+                alert('O cpf digitado é inválido!');
+            }
         } else {
-            alert('Alguma informação foi inserida incorretamente!')
+            alert('O nome deve ter pelo menos 3 caracteres!');
         }
     }
 
@@ -62,39 +70,27 @@ export default function BuyTicket() {
 
     return (
         <>
-            <Title color='black' fontWeigth='400'>
+            <Title>
                 Selecione o(s) assento(s)
             </Title>
             <Content>
                 <SeatOptions>
                     {seats.map((item, index) => (
-                        <Seats key={index} item={item} index={index} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} buyersName={buyersName} cpf={cpf} setIsDisable={setIsDisable} />
+                        <Seats key={index} item={item} selectedSeats={selectedSeats} setSelectedSeats={setSelectedSeats} />
                     ))}
                 </SeatOptions>
                 <SeatInformations />
                 <Inputs>
                     <div>
                         <label>Nome do comprador:</label>
-                        <input placeholder="Digite seu nome..." onChange={(e) => {
-                            if (buyersName.length + 1 > 2 && cpf.length === 11 && selectedSeats.id.length > 0) {
-                                setIsDisable(false);
-                            } else {
-                                setIsDisable(true);
-                            } setBuyersName(e.target.value)
-                        }} />
+                        <input placeholder="Digite seu nome..." onChange={(e) => setBuyersName(e.target.value)} />
                     </div>
                     <div>
                         <label>CPF do comprador:</label>
-                        <input placeholder="Digite seu CPF..." onChange={(e) => {
-                            if (buyersName.length > 2 && cpf.length + 1 === 11 && selectedSeats.id.length > 0) {
-                                setIsDisable(false);
-                            } else {
-                                setIsDisable(true);
-                            } setCpf(e.target.value)
-                        }} pattern='[0-9] {11}' />
+                        <input placeholder="Digite seu CPF..." onChange={(e) => setCpf(e.target.value)} pattern='[0-9] {11}' />
                     </div>
                 </Inputs>
-                <Button><button disabled={isDisable ? 'disabled' : null} onClick={confirmRequest}>Reservar assento(s)</button></Button>
+                <Button><button onClick={confirmRequest}>Reservar assento(s)</button></Button>
             </Content>
             <Footer sessionInformations={sessionInformations} />
         </>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function Seats({ item, selectedSeats, setSelectedSeats, buyersName, cpf, setIsDisable }) {
+export default function Seats({ item, selectedSeats, setSelectedSeats}) {
     const [seatAvailable, setSeatAvailable] = useState('var(--seat-available)');
     const [availableBorder, setAvailableBorder] = useState('var(--seat-available-border)');
 
@@ -10,12 +10,7 @@ export default function Seats({ item, selectedSeats, setSelectedSeats, buyersNam
             setSelectedSeats({ id: [...selectedSeats.id, id], name: [...selectedSeats.name, name] });
             setSeatAvailable('var(--selected-seat)');
             setAvailableBorder('var(--selected-seat-border)');
-
-            if (buyersName.length > 2 && cpf.length === 11) {
-                setIsDisable(false);
-            }
         } else {
-
             let seats = {id: [], name: []};
             
             selectedSeats.id.forEach((item, index) => {
@@ -24,12 +19,6 @@ export default function Seats({ item, selectedSeats, setSelectedSeats, buyersNam
                     seats.name.push(selectedSeats.name[index]);
                 }
             });
-
-            if (buyersName.length > 2 && cpf.length === 11 && seats.id.length > 0) {
-                setIsDisable(false);
-            } else {
-                setIsDisable(true);
-            }
 
             setSelectedSeats({ id: [...seats.id], name: [...seats.name] });
             setSeatAvailable('var(--seat-available)');
