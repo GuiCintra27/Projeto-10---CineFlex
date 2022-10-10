@@ -4,10 +4,10 @@ export default function Footer({ sessionInformations }) {
     const seatSection = sessionInformations.seats;
     return (
         <MovieSelected>
-            <MovieInPoster>
+            <MovieInPoster data-identifier="movie-img-preview">
                 <img src={seatSection ? sessionInformations.movie.posterURL : sessionInformations.posterURL} alt={seatSection ? sessionInformations.movie.title : sessionInformations.title} />
             </MovieInPoster>
-            <MovieInformations>
+            <MovieInformations data-identifier="movie-and-session-infos-preview">
                 <h1>{seatSection ? sessionInformations.movie.title : sessionInformations.title}</h1>
                 {seatSection ?
                     <h1>{sessionInformations.day.weekday} - {sessionInformations.name}</h1>

@@ -4,7 +4,7 @@ import styled from "styled-components";
 export default function Movie({ id, movie, cover }) {
     return (
         <Link to={`/sessoes/${id}`}>
-            <MovieInPoster>
+            <MovieInPoster data-identifier="movie-outdoor">
                 <img src={cover} alt={movie}/>
             </MovieInPoster>
         </Link>

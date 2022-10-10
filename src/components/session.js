@@ -4,11 +4,11 @@ import styled from "styled-components";
 export default function Session({ weekday, date, hours}) {
     return (
         <>
-            <h1>{weekday} - {date}</h1>
+            <h1 data-identifier="session-date">{weekday} - {date}</h1>
             <SelectSession>
                 {hours.map((item, index) => (
                     <Link key={index} to={`/assentos/${item.id}`}>
-                        <button>{item.name}</button>
+                        <button data-identifier="hour-minute-btn">{item.name}</button>
                     </Link>
                 ))}
             </SelectSession>

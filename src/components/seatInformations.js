@@ -3,15 +3,15 @@ import styled from "styled-components";
 export default function SeatInformations() {
     return (
         <Informations>
-            <div>
+            <div data-identifier="seat-selected-subtitle">
                 <Seat color="var(--selected-seat)" border='var(--selected-seat-border)' />
                 <p>Selecionado</p>
             </div>
-            <div>
+            <div data-identifier="seat-available-subtitle">
                 <Seat color="var(--seat-available)" border='var(--seat-available-border)' />
                 <p>Disponível</p>
             </div>
-            <div>
+            <div data-identifier="seat-unavailable-subtitle">
                 <Seat color="var(--seat-unavailable)" border='var(--seat-unavailable-border)' />
                 <p>Indisponível</p>
             </div>

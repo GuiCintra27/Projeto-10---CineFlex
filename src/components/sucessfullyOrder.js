@@ -5,7 +5,7 @@ import Title from "./title";
 export default function SucessfullyOrder() {
     const { seats, name, cpf, movie, date, hour } = useParams();
 
-    let cpfStyled = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,
+    const cpfStyled = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,
         function (regex, argumento1, argumento2, argumento3, argumento4) {
             return argumento1 + '.' + argumento2 + '.' + argumento3 + '-' + argumento4;
         })
@@ -21,24 +21,24 @@ export default function SucessfullyOrder() {
 
             <Informations>
                 <h1>Filme e sessão</h1>
-                <p>{movie}</p>
-                <p>{`${fullDate[0]}/${fullDate[1]}/${fullDate[2]}`}- {hour}</p>
+                <p data-identifier="movie-session-infos-reserve-finished" >{movie}</p>
+                <p data-identifier="movie-session-infos-reserve-finished" >{`${fullDate[0]}/${fullDate[1]}/${fullDate[2]}`}- {hour}</p>
             </Informations>
 
             <Informations>
                 <h1>Ingressos</h1>
                 {seat.map((item, index) => (
-                    <p key={index}>Assento {item}</p>
+                    <p key={index} data-identifier="seat-infos-reserve-finished">Assento {item}</p>
                 ))}
             </Informations>
 
             <Informations>
                 <h1>Comprador</h1>
-                <p>Nome: {name}</p>
-                <p>CPF: {cpfStyled}</p>
+                <p data-identifier="buyer-infos-reserve-finished">Nome: {name}</p>
+                <p data-identifier="buyer-infos-reserve-finished">CPF: {cpfStyled}</p>
             </Informations>
 
-            <Button><Link to="/">Voltar para Home</Link></Button>
+            <Button data-identifier="back-to-home-btn"><Link to="/">Voltar para Home</Link></Button>
         </>
     );
 }

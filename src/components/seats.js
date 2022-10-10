@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function Seats({ item, selectedSeats, setSelectedSeats}) {
+export default function Seats({ item, selectedSeats, setSelectedSeats }) {
     const [seatAvailable, setSeatAvailable] = useState('var(--seat-available)');
     const [availableBorder, setAvailableBorder] = useState('var(--seat-available-border)');
 
@@ -11,8 +11,8 @@ export default function Seats({ item, selectedSeats, setSelectedSeats}) {
             setSeatAvailable('var(--selected-seat)');
             setAvailableBorder('var(--selected-seat-border)');
         } else {
-            let seats = {id: [], name: []};
-            
+            let seats = { id: [], name: [] };
+
             selectedSeats.id.forEach((item, index) => {
                 if (item !== id) {
                     seats.id.push(item);
@@ -28,6 +28,7 @@ export default function Seats({ item, selectedSeats, setSelectedSeats}) {
 
     return (
         <Seat
+            data-identifier="seat"
             color={item.isAvailable ? seatAvailable : 'var(--seat-unavailable)'}
             border={item.isAvailable ? availableBorder : 'var(--seat-unavailable-border)'}
             onClick={item.isAvailable ? () => selectSeat(item.id, item.name) : () => alert('Esse assento não está disponível!')}>

@@ -39,7 +39,7 @@ export default function BuyTicket() {
             const date = sessionInformations.day.date.split('/');
 
             axios.post(buyURL, buy).then(response => {
-                window.open(`/sucesso/${selectedSeats.name}/${buy.name}/${cpf}/${sessionInformations.movie.title}/${date}/${sessionInformations.name}`, '_self')
+                window.open(`/sucesso/${selectedSeats.name}-${buy.name}-${cpf}-${sessionInformations.movie.title}-${date}-${sessionInformations.name}`, '_self')
             });
 
             axios.post(buyURL, buy).catch(err => {
@@ -83,14 +83,14 @@ export default function BuyTicket() {
                 <Inputs>
                     <div>
                         <label>Nome do comprador:</label>
-                        <input placeholder="Digite seu nome..." onChange={(e) => setBuyersName(e.target.value)} />
+                        <input data-identifier="buyer-name-input" placeholder="Digite seu nome..." onChange={(e) => setBuyersName(e.target.value)} />
                     </div>
                     <div>
                         <label>CPF do comprador:</label>
-                        <input placeholder="Digite seu CPF..." onChange={(e) => setCpf(e.target.value)} pattern='[0-9] {11}' />
+                        <input data-identifier="buyer-cpf-input" placeholder="Digite seu CPF..." onChange={(e) => setCpf(e.target.value)} pattern='[0-9] {11}' />
                     </div>
                 </Inputs>
-                <Button><button onClick={confirmRequest}>Reservar assento(s)</button></Button>
+                <Button><button data-identifier="reservation-btn" onClick={confirmRequest}>Reservar assento(s)</button></Button>
             </Content>
             <Footer sessionInformations={sessionInformations} />
         </>
